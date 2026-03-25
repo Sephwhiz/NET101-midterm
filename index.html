@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NET101 Midterm Quiz - Modules 4 & 5</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0bfe9 0%, #d4c1ec 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px dashed #9b59b6;
+        }
+        .header-section h1 {
+            color: #6a1b9a;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .header-section p {
+            color: #5e35b1;
+            font-size: 1.1rem;
+        }
+        .question-card {
+            background: #f9f7ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #9b59b6;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        .question-number {
+            background: #9b59b6;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+        .question-text {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #283593;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            margin: 8px 0;
+            background: white;
+            border: 2px solid #d1c4e9;
+            border-radius: 12px;
+            text-align: left;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #424242;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+        .option-btn:hover {
+            background: #ede7f6;
+            border-color: #9b59b6;
+            transform: translateX(5px);
+        }
+        .option-btn.selected {
+            background: #9b59b6;
+            color: white;
+            border-color: #7d4a98;
+            font-weight: 600;
+        }
+        .option-btn.correct {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            font-weight: 600;
+        }
+        .option-btn.wrong {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            font-weight: 600;
+        }
+        .explanation {
+            margin-top: 18px;
+            padding: 16px;
+            background: #e8eaf6;
+            border-left: 4px solid #5e35b1;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #1a237e;
+            display: none;
+        }
+        .explanation.show {
+            display: block;
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #9b59b6, #6a1b9a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .result-message {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 20px 0 30px;
+            padding: 15px;
+            border-radius: 15px;
+        }
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 25px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .stat-correct {
+            color: #28a745;
+        }
+        .stat-wrong {
+            color: #dc3545;
+        }
+        .progress-container {
+            max-width: 600px;
+            margin: 25px auto;
+        }
+        .btn-quiz {
+            padding: 14px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-start {
+            background: #9b59b6;
+            border: none;
+            color: white;
+        }
+        .btn-start:hover {
+            background: #7d4a98;
+            transform: scale(1.05);
+        }
+        .btn-submit {
+            background: #6a1b9a;
+            border: none;
+            color: white;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto;
+            display: block;
+        }
+        .btn-submit:hover {
+            background: #4a148c;
+            transform: scale(1.03);
+        }
+        .btn-restart {
+            background: #9b59b6;
+            border: none;
+            color: white;
+            width: 100%;
+            max-width: 300px;
+            margin: 30px auto;
+            display: block;
+        }
+        .btn-restart:hover {
+            background: #7d4a98;
+            transform: scale(1.03);
+        }
+        .module-divider {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        .module-divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #9b59b6, transparent);
+        }
+        .module-title {
+            background: white;
+            padding: 0 20px;
+            position: relative;
+            display: inline-block;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #6a1b9a;
+        }
+        .instructions-list {
+            text-align: left;
+            max-width: 600px;
+            margin: 25px auto;
+            padding: 20px;
+            background: #f3e5f5;
+            border-radius: 15px;
+            font-size: 1.05rem;
+        }
+        .instructions-list li {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            position: relative;
+        }
+        .instructions-list li::before {
+            content: "✓";
+            color: #9b59b6;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        .color-sequence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        .wire-color {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            min-width: 100px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .white-green { background: linear-gradient(135deg, #e0e0e0 50%, #4caf50 50%); color: #333; }
+        .green { background-color: #4caf50; }
+        .white-orange { background: linear-gradient(135deg, #e0e0e0 50%, #ff9800 50%); color: #333; }
+        .blue { background-color: #2196f3; }
+        .white-blue { background: linear-gradient(135deg, #e0e0e0 50%, #2196f3 50%); color: #333; }
+        .orange { background-color: #ff9800; }
+        .white-brown { background: linear-gradient(135deg, #e0e0e0 50%, #795548 50%); color: #333; }
+        .brown { background-color: #795548; }
+        .subnet-binary {
+            background: #263238;
+            color: #00e676;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.3rem;
+            text-align: center;
+            letter-spacing: 2px;
+            border: 2px solid #546e7a;
+        }
+        .highlight {
+            background: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="quiz-container text-center">
+            <div class="header-section">
+                <h1>NET101 Midterm Quiz</h1>
+                <p class="lead">Modules 4 & 5 Review: Network Cabling & Addressing</p>
+                <span class="badge bg-purple fs-5 py-2 px-4" style="background-color: #9b59b6;">73 Questions</span>
+            </div>
+            
+            <div class="instructions-list">
+                <h4 class="mb-3 text-primary">Instructions:</h4>
+                <ul class="text-start">
+                    <li>Answer all 73 questions in order</li>
+                    <li>Click your answer choice (A/B/C/D or TRUE/FALSE)</li>
+                    <li>All questions must be answered before submission</li>
+                    <li>After submitting, review explanations for every question</li>
+                    <li>Green = Correct | Red = Wrong answers</li>
+                </ul>
+            </div>
+            
+            <div class="mt-4 p-4 bg-light rounded">
+                <p class="mb-2"><strong>💡 Key Focus Areas:</strong></p>
+                <p class="mb-1">• T568A/T568B color sequences (positions 1-8)</p>
+                <p class="mb-1">• Straight-through vs Crossover cables</p>
+                <p class="mb-1">• Subnet mask 255.255.0.0 = 16 bits (16 ones + 16 zeros)</p>
+                <p class="mb-1">• MAC vs IP address differences</p>
+            </div>
+            
+            <button id="startBtn" class="btn btn-quiz btn-start mt-4">Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quizScreen" class="quiz-container" style="display: none;">
+            <div class="header-section">
+                <h1>NET101 Quiz</h1>
+                <p class="lead">Modules 4 & 5: Network Cabling & Addressing</p>
+                <p class="text-muted h5">Question <span id="currentQuestion">1</span> of 73</p>
+            </div>
+
+            <div id="questionsContainer"></div>
+
+            <button id="submitBtn" class="btn btn-quiz btn-submit">Submit Quiz</button>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="quiz-container" style="display: none;">
+            <div class="header-section">
+                <h1>Quiz Results</h1>
+                <p class="lead">Your NET101 Midterm Score</p>
+            </div>
+
+            <div class="score-display">
+                <span id="score">0</span>/73
+            </div>
+            
+            <p id="resultMessage" class="result-message"></p>
+            
+            <div class="stats-container">
+                <div>
+                    <div class="stat-correct">✓ Correct: <span id="correctCount">0</span></div>
+                </div>
+                <div>
+                    <div class="stat-wrong">✗ Wrong: <span id="wrongCount">0</span></div>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress" style="height: 25px; border-radius: 12px; overflow: hidden;">
+                    <div id="scoreBar" class="progress-bar" role="progressbar" style="width: 0%; font-weight: 700;"></div>
+                </div>
+            </div>
+            
+            <div id="resultsContainer" class="mt-4"></div>
+            
+            <button id="restartBtn" class="btn btn-quiz btn-restart">Take Quiz Again</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Complete 73 questions based strictly on NET101 Modules 4 & 5
+        const quizData = [
+            // ===== MODULE 4: NETWORK CABLING (Questions 1-35) =====
+            {
+                question: "UTP consists of 4 pairs of color-coded wires twisted around each other.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 states: 'UTP consists of 4 pairs of color-coded wires twisted around each other. The wires are twisted to prevent electromagnetic interference (crosstalk).' 4 pairs = 8 wires total inside the cable."
+            },
+            {
+                question: "Crossover cable is used to connect two dissimilar devices.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 states: 'Crossover cable connects 2 similar devices together.' Straight-through cable connects dissimilar devices (computer → switch). Crossover is for PC→PC or switch→switch connections."
+            },
+            {
+                question: "The third color code in the T568A standard of twisted pair cable is white/orange.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 T568A diagram shows: Position 1=white/green, Position 2=green, Position 3=white/orange. This is fixed in the standard—position 3 is always white/orange for T568A."
+            },
+            {
+                question: "The fourth color code in the T568B standard of twisted pair cable is blue.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 T568B diagram shows Position 4 is blue. Blue is ALWAYS the 4th wire in BOTH T568A and T568B standards—this never changes, like the 4th floor in a building always being blue."
+            },
+            {
+                question: "In RJ45, RJ means radio jack.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 states: 'RJ stands for Registered Jack, implying that the connector follows a standard borrowed from the telephone industry.' It does NOT mean 'radio jack'—this is a common misconception."
+            },
+            {
+                question: "The fourth color code in the T568A standard of twisted pair cable is blue.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 T568A diagram shows: Position 1=white/green, 2=green, 3=white/orange, Position 4=blue. Blue is always the 4th wire in both T568A and T568B standards."
+            },
+            {
+                question: "Shielded twisted pair (STP) is suitable for environments with electrical interference.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 states: 'Shielded twisted pair (STP) is suitable for environments with electrical interference.' STP has a foil shield that blocks noise from motors/machines in factories—UTP has no shield."
+            },
+            {
+                question: "UTP is designed to reduce crosstalk, RFI, and EMI.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 advantages list states: 'It is designed to reduce crosstalk, RFI, and EMI.' Twisting wires cancels interference between pairs—like two people walking in circles so outside noise cancels out."
+            },
+            {
+                question: "Straight-through network cable is the combination of T568A and T568B wirings.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 states: 'A straight (patch) cable is when both ends of a cable are wired using the same standard.' Crossover cable = combination (T568A on one end + T568B on other end). Straight-through uses same standard on both ends (A-A or B-B)."
+            },
+            {
+                question: "The EIA/TIA (Electronic Industries Alliance/Telecommunications Industry Association) has established standards of UTP and rated five categories of wire.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 states EIA/TIA established standards, but they rated MORE than 5 categories: Cat3, Cat5, Cat5e, Cat6, Cat6a, Cat7 (see categories table). Also note: Correct name is EIA/TIA—not 'ETA/TIA'."
+            },
+            {
+                question: "Straight-through cable is used to connect two similar devices.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 states: 'Straight cable connects dissimilar devices together' (computer → switch). Crossover cable connects similar devices (PC → PC). Remember: 'Different devices = straight path'."
+            },
+            {
+                question: "RJ-45 connector has 8 pins.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 shows RJ-45 as 'a plastic connector that looks like a large telephone-style connector.' Standard RJ-45 has 8 positions/8 contacts (8P8C). RJ-11 telephone jack has only 4-6 pins."
+            },
+            {
+                question: "UTP maximum segment length is 100 meters.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 disadvantages states: 'It can only be used in length segment up to 100 meters.' Beyond this, signal weakens significantly—like shouting across a large field where voice fades."
+            },
+            {
+                question: "Category 5e UTP cable supports 1 Gbps speed.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 categories table shows: Category 5e = 1 Gbps. The 'e' means 'enhanced'—better than Cat5 (100 Mbps) for modern networks. Cat6 supports 10 Gbps for cable lengths under 100 meters."
+            },
+            {
+                question: "STP is cheaper than UTP.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 STP disadvantages states: 'It is the most expensive wire from UTP cables.' The metal foil shield adds manufacturing cost—UTP has no shield, making it cheaper for homes/offices."
+            },
+            {
+                question: "The standard connector for UTP cabling is RJ-45.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 states: 'The standard connector for unshielded twisted pair cabling is an RJ-45 connector. This is a plastic connector that looks like a large telephone-style connector.'"
+            },
+            {
+                question: "T568A and T568B both end with brown as the 8th wire color.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Both standards end with brown at position 8: T568A sequence = white/green → green → white/orange → blue → white/blue → orange → white/brown → brown. T568B = white/orange → orange → white/green → blue → white/blue → green → white/brown → brown."
+            },
+            {
+                question: "UTP has a foil shield covering the wires.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 4 states STP has 'a foil shield that covers the wires.' UTP is UNshielded—no metal shield, just 4 twisted pairs inside plastic jacket. That's why it's called 'Unshielded' Twisted Pair."
+            },
+            {
+                question: "Straight-through cable uses the same wiring standard on both ends.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 states: 'A straight (patch) cable is when both ends of a cable are wired using the same standard.' Like wearing matching socks—both ends identical (A-A or B-B wiring)."
+            },
+            {
+                question: "Crossover cable uses T568A on one end and T568B on the other end.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 diagrams show crossover cable = T568A on one end + T568B on the other end. This swaps transmit/receive wires so similar devices (PC→PC) can communicate directly."
+            },
+            {
+                question: "UTP is mostly useful for short-distance network connections like home and small organizations.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 advantages list states: 'It is mostly useful for short-distance network connections like home and small organizations.' Limited to 100 meters max—ideal for buildings but not city-wide networks."
+            },
+            {
+                question: "STP requires grounding to work properly.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 STP disadvantages mentions: 'It is used only as a grounded wire.' The foil shield must be grounded to drain electrical interference—otherwise the shield won't block noise effectively."
+            },
+            {
+                question: "Category 6 UTP cable supports 10 Gbps speed for cable lengths under 100 meters.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 4 categories table shows: Category 6 = 1 Gbps / 10 Gbps (cable length under 100 meters). Cat6a (Augmented) supports 10 Gbps at full 100m distance."
+            },
+            {
+                question: "What does UTP stand for?",
+                options: ["UltraNet Twin Parity", "Uncoupled Transient Protected", "User Technology Protocol", "Unshielded Twisted Pair"],
+                correct: 3,
+                explanation: "Module 4 states: 'Unshielded twisted pair (UTP) is the most popular...' It has no metal shield around the wires—just 4 twisted pairs inside plastic jacket. 'Unshielded' is the key word."
+            },
+            {
+                question: "How many twisted pairs are inside a standard UTP cable?",
+                options: ["2 pairs", "3 pairs", "4 pairs", "8 pairs"],
+                correct: 2,
+                explanation: "Module 4 states: 'UTP consists of 4 pairs of color-coded wires twisted around each other.' 4 pairs = 8 individual wires total. Each pair has a specific color code for termination."
+            },
+            {
+                question: "What is the standard connector for UTP cabling?",
+                options: ["HDMI", "USB-C", "RJ-11", "RJ-45 connector"],
+                correct: 3,
+                explanation: "Module 4 states: 'The standard connector for unshielded twisted pair cabling is an RJ-45 connector. This is a plastic connector that looks like a large telephone-style connector.' RJ-11 is for telephones (smaller)."
+            },
+            {
+                question: "What does 'RJ' stand for in RJ-45?",
+                options: ["Radio Jack", "Registered Jack", "Router Jack", "Remote Jack"],
+                correct: 1,
+                explanation: "Module 4 states: 'RJ stands for Registered Jack, implying that the connector follows a standard borrowed from the telephone industry.' It is NOT 'radio jack'—this is a common mistake."
+            },
+            {
+                question: "What is the FIRST wire color in the T568A standard?",
+                options: ["White/Orange", "White/Green", "Green", "Blue"],
+                correct: 1,
+                explanation: "Module 4 T568A diagram shows: Position 1 = white/green. Full T568A sequence: white/green → green → white/orange → blue → white/blue → orange → white/brown → brown."
+            },
+            {
+                question: "What is the SECOND wire color in the T568A standard?",
+                options: ["White/Green", "Green", "White/Orange", "Orange"],
+                correct: 1,
+                explanation: "Module 4 T568A diagram shows: Position 1=white/green, Position 2=green. Remember T568A starts with GREEN family (white/green → green) unlike T568B which starts with ORANGE family."
+            },
+            {
+                question: "What is the THIRD wire color in the T568A standard?",
+                options: ["White/Green", "Green", "White/Orange", "Blue"],
+                correct: 2,
+                explanation: "Module 4 T568A diagram shows: Position 3 = white/orange. This is a key difference from T568B where position 3 is white/green. Memorize: T568A position 3 = white/orange."
+            },
+            {
+                question: "What is the SIXTH wire color in the T568A standard?",
+                options: ["White/Blue", "Blue", "White/Orange", "Orange"],
+                correct: 3,
+                explanation: "Module 4 T568A diagram shows full sequence: 1=white/green, 2=green, 3=white/orange, 4=blue, 5=white/blue, Position 6=orange, 7=white/brown, 8=brown."
+            },
+            {
+                question: "What is the FIRST wire color in the T568B standard?",
+                options: ["White/Green", "Green", "White/Orange", "Orange"],
+                correct: 2,
+                explanation: "Module 4 T568B diagram shows: Position 1 = white/orange. Full T568B sequence: white/orange → orange → white/green → blue → white/blue → green → white/brown → brown."
+            },
+            {
+                question: "What is the THIRD wire color in the T568B standard?",
+                options: ["White/Orange", "Orange", "White/Green", "Green"],
+                correct: 2,
+                explanation: "Module 4 T568B diagram shows: Position 1=white/orange, 2=orange, Position 3=white/green. Key difference from T568A: T568B position 3 = white/green (T568A position 3 = white/orange)."
+            },
+            {
+                question: "What is the SIXTH wire color in the T568B standard?",
+                options: ["White/Blue", "Blue", "White/Green", "Green"],
+                correct: 3,
+                explanation: "Module 4 T568B diagram shows full sequence: 1=white/orange, 2=orange, 3=white/green, 4=blue, 5=white/blue, Position 6=green, 7=white/brown, 8=brown."
+            },
+            {
+                question: "Which cable type should be used to connect a computer to a switch?",
+                options: ["HDMI", "Patch", "Crossover", "Straight-through"],
+                correct: 3,
+                explanation: "Module 4 states: 'Straight cable connects dissimilar devices together.' Computer and switch are different devices—like plugging a lamp (device) into a wall outlet (switch). Crossover is for similar devices (PC→PC)."
+            },
+            
+            // ===== MODULE 5: NETWORK ADDRESSING (Questions 36-73) =====
+            {
+                question: "MAC address is 48 bits long.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states: 'It is in the form of a 48-bit address, often written in hexadecimal format' (e.g., 00:1A:2B:3C:4D:5E). 48 bits = 6 bytes = 12 hexadecimal characters."
+            },
+            {
+                question: "IPv4 address has 32 bits total.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states: 'An IPv4 address is simply a series of 32 binary bits (ones and zeros)' grouped into 4 octets (8 bits each). 4 × 8 = 32 bits total."
+            },
+            {
+                question: "IPv6 uses 128 bits.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states IPv6 uses '128-bit alphanumeric labels written in hexadecimal format' to solve IPv4's address shortage. 128 bits allows for 3.4×10³⁸ possible addresses."
+            },
+            {
+                question: "Private IP addresses starting with 192.168 are routable on the public internet.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 5 states private addresses 'are not routable on the public internet.' They're only for local networks (homes/offices). Public IPs (assigned by ISP) are routable globally."
+            },
+            {
+                question: "Dynamic IP addresses are assigned manually by an administrator.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 5 states: 'Dynamic IP Address - Automatically assigned by a network when a device is connected - Managed by DHCP.' Static IPs are manually assigned and don't change."
+            },
+            {
+                question: "Subnet mask 255.255.255.0 uses 24 bits for the network portion.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 page 23 states: '255.255.255.0(decimal) or 11111111.11111111.11111111.00000000(binary) uses 24 bits to identify the network number.' Three 255s = 24 ones in binary."
+            },
+            {
+                question: "In IPv6 notation, leading zeros in each segment can be omitted.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 Rule 1 states: 'Omit Leading Zeros... 0DB8 can be represented as DB8.' This simplifies IPv6 addresses—0000 becomes 0, 0200 becomes 200, etc."
+            },
+            {
+                question: "The MAC address changes when you connect to a different network.",
+                options: ["TRUE", "FALSE"],
+                correct: 1,
+                explanation: "Module 5 comparison states MAC is 'the Identity Information (e.g., Your Name)'—never changes. IP is 'the receiving address (e.g., Your location address)'—changes when you move networks."
+            },
+            {
+                question: "Subnet mask 255.255.0.0 has 16 network bits.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0 = 11111111.11111111.00000000.00000000'. Two 255s = 16 ones in binary = 16 network bits, 16 host bits."
+            },
+            {
+                question: "What does IP address stand for?",
+                options: ["Internet Password", "Internal Protocol", "Internet Protocol", "Interface Port"],
+                correct: 2,
+                explanation: "Module 5 states: 'An Internet Protocol Address is a unique numerical label...' It's like a mailing address for devices on a network—ensures information reaches its destination."
+            },
+            {
+                question: "How many bits are in an IPv4 address?",
+                options: ["16 bits", "32 bits", "64 bits", "128 bits"],
+                correct: 1,
+                explanation: "Module 5 states: 'An IPv4 address is simply a series of 32 binary bits (ones and zeros)' grouped into 4 octets (8 bits each). 4 × 8 = 32 bits total."
+            },
+            {
+                question: "How many bits are in an IPv6 address?",
+                options: ["32 bits", "64 bits", "96 bits", "128 bits"],
+                correct: 3,
+                explanation: "Module 5 states IPv6 uses '128-bit alphanumeric labels written in hexadecimal format' to provide more addresses than IPv4's 4.3 billion limit."
+            },
+            {
+                question: "Which is a VALID IPv4 address format?",
+                options: ["2001:0db8:85a3::8a2e:0370:7334", "172.16.254.1", "00:1A:2B:3C:4D:5E", "www.google.com"],
+                correct: 1,
+                explanation: "Module 5 examples show IPv4 = '172.16.254.1 or 10.0.0.1' in dotted-decimal notation. Option A is IPv6, C is MAC address, D is domain name—not IP formats."
+            },
+            {
+                question: "Which is a VALID IPv6 address format?",
+                options: ["192.168.1.1", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "00-1A-2B-3C-4D-5E", "10.0.0.1"],
+                correct: 1,
+                explanation: "Module 5 shows IPv6 example: '2001:0db8:85a3:0000:0000:8a2e:0370:7334' in hexadecimal with colons. Can be shortened using rules (omit leading zeros, use :: for consecutive zeros)."
+            },
+            {
+                question: "What is the purpose of a subnet mask?",
+                options: ["Encrypt network traffic", "Identify network vs host portions of an IP address", "Assign IP addresses automatically", "Block hackers"],
+                correct: 1,
+                explanation: "Module 5 states: 'To know which portion of the IP Address is the network or the host, SUBNET MASK comes in.' It masks (hides) the host part to reveal the network part—like separating city name from street address."
+            },
+            {
+                question: "What is the BINARY representation of subnet mask 255.255.0.0?",
+                options: ["11111111.00000000.00000000.00000000", "11111111.11111111.00000000.00000000", "11111111.11111111.11111111.00000000", "00000000.00000000.11111111.11111111"],
+                correct: 1,
+                explanation: "Module 5 page 23 shows: '16 bits = 255.255.0.0 = 11111111.11111111.00000000.00000000'. First 16 bits = 1s (network portion), last 16 bits = 0s (host portion). This is the 16-bit subnet mask."
+            },
+            {
+                question: "How many BITS does subnet mask 255.255.0.0 use for the network portion?",
+                options: ["8 bits", "16 bits", "24 bits", "32 bits"],
+                correct: 1,
+                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0'. Two 255s = 16 ones in binary = 16 network bits. This leaves 16 bits for host addresses (supports 65,534 hosts)."
+            },
+            {
+                question: "What does the '16 bits' in subnet mask 255.255.0.0 mean?",
+                options: ["16 devices can connect", "First 16 bits identify the network", "Password has 16 characters", "Cable length is 16 meters"],
+                correct: 1,
+                explanation: "Module 5 states subnet mask 'reveals how many bits in the IP address are used for the network.' 255.255.0.0 = first 16 bits = network ID, last 16 bits = host ID. Example: 172.16.25.10 → Network=172.16, Host=25.10."
+            },
+            {
+                question: "Which subnet mask uses 8 network bits?",
+                options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
+                correct: 0,
+                explanation: "Module 5 page 23 shows '255.0.0.0(8-bits)'. One 255 = 8 ones in binary = 8 network bits. Used for very large networks (Class A)."
+            },
+            {
+                question: "Which subnet mask uses 24 network bits?",
+                options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
+                correct: 2,
+                explanation: "Module 5 page 23 states: '255.255.255.0(decimal) or 11111111.11111111.11111111.00000000(binary) uses 24 bits to identify the network number.' Common for small offices/homes."
+            },
+            {
+                question: "What is a PRIVATE IP address example?",
+                options: ["8.8.8.8", "172.16.25.10", "203.0.113.5", "198.51.100.1"],
+                correct: 1,
+                explanation: "Module 5 states private addresses 'most common start with 192.168.xx' but also include 172.16.x.x range. Option B (172.16.25.10) is private—used inside homes/offices, not routable on internet."
+            },
+            {
+                question: "What is a PUBLIC IP address used for?",
+                options: ["Connecting devices inside your home", "Communicating with external networks globally", "Identifying your laptop locally", "Printing documents"],
+                correct: 1,
+                explanation: "Module 5 states public IP 'is assigned by the ISP and is unique across the entire internet, allowing devices to communicate with external networks and other devices globally.' Required for accessing websites."
+            },
+            {
+                question: "Which IP address type does NOT change over time?",
+                options: ["Dynamic", "DHCP", "Static", "Temporary"],
+                correct: 2,
+                explanation: "Module 5 states: 'Static IP Address - Do not change over time - Manually assigned to a device by an administrator...' Ideal for servers that need consistent addressing."
+            },
+            {
+                question: "Which IP address type is assigned automatically by DHCP?",
+                options: ["Static", "Fixed", "Permanent", "Dynamic"],
+                correct: 3,
+                explanation: "Module 5 states: 'Dynamic IP Address - Automatically assigned by a network when a device is connected - Managed by Dynamic Host Configuration Protocol (DHCP).' Most home devices use dynamic IPs."
+            },
+            {
+                question: "What does MAC address stand for?",
+                options: ["Main Access Controller", "Media Access Control", "Mobile Address Code", "Master Authentication Certificate"],
+                correct: 1,
+                explanation: "Module 5 states: 'Media Access Control (MAC) - Serves as a unique identifier for devices on a network.' Burned into network card at factory—like a device's fingerprint."
+            },
+            {
+                question: "How many bits is a MAC address?",
+                options: ["32 bits", "48 bits", "64 bits", "128 bits"],
+                correct: 1,
+                explanation: "Module 5 states: 'It is in the form of a 48-bit address, often written in hexadecimal format.' Example: 00:1A:2B:3C:4D:5E = 6 groups × 8 bits = 48 bits total."
+            },
+            {
+                question: "What is the KEY difference between MAC and IP addresses?",
+                options: ["MAC changes when you move networks; IP stays the same", "MAC is for local networks; IP is for broader networks", "MAC is numeric only; IP uses letters", "MAC is assigned by ISP; IP by manufacturer"],
+                correct: 1,
+                explanation: "Module 5 comparison: MAC = 'identity information (e.g., Your Name)' stays constant locally. IP = 'receiving address (e.g., Your location address)' changes when you move networks. MAC works at Data Link Layer; IP at Network Layer."
+            },
+            {
+                question: "Which address type is like your NAME?",
+                options: ["IP Address", "Subnet Mask", "MAC Address", "Default Gateway"],
+                correct: 2,
+                explanation: "Module 5 states MAC Address is 'the Identity Information (e.g., Your Name)'—never changes, unique to your device like your personal name. IP address is like your house address—it changes when you move."
+            },
+            {
+                question: "Which address type is like your HOUSE ADDRESS?",
+                options: ["MAC Address", "IP Address", "Subnet Mask", "Port Number"],
+                correct: 1,
+                explanation: "Module 5 states IP Address is 'the receiving address (e.g., Your location address)'—changes when you move to a new network. MAC address is like your name—it stays the same wherever you go."
+            },
+            {
+                question: "What is the range of values for ONE octet in IPv4?",
+                options: ["0-15", "0-127", "0-255", "0-1023"],
+                correct: 2,
+                explanation: "Module 5 states: 'Octet can range 0-255 numbers' because 8 bits = 2⁸ = 256 possible values (0 to 255). Example: 192.168.1.1 has four octets, each between 0-255."
+            },
+            {
+                question: "How many total IPv4 addresses are possible?",
+                options: ["256", "65,536", "16.7 million", "4.3 billion"],
+                correct: 3,
+                explanation: "Module 5 states IPv4 'Can hold up to 4.3 billion IP Addresses' (2³² = 4,294,967,296). This limit is why IPv6 was created with 128 bits for more addresses."
+            },
+            {
+                question: "What does IPv6 solve compared to IPv4?",
+                options: ["Slower speed", "Limited number of addresses", "Harder to remember", "More expensive"],
+                correct: 1,
+                explanation: "Module 5 IPv6 description states it 'Allows a larger number of possible IP Addresses' because IPv4's 4.3 billion limit is exhausted. IPv6 provides 340 undecillion addresses (3.4×10³⁸)."
+            },
+            {
+                question: "Which rule simplifies IPv6 address 2001:0db8:... to 2001:db8:...?",
+                options: ["Remove all zeros", "Omit leading zeros in each segment", "Replace all colons with dots", "Use decimal instead of hex"],
+                correct: 1,
+                explanation: "Module 5 Rule 1 states: 'Omit Leading Zeros... 0DB8 can be represented as DB8.' Each 16-bit segment can drop leading zeros—0000 becomes 0, 0200 becomes 200, etc."
+            },
+            {
+                question: "What does '::' (double colon) mean in IPv6?",
+                options: ["End of address", "Replace one group of consecutive all-zero segments", "Separator between network/host", "Error indicator"],
+                correct: 1,
+                explanation: "Module 5 Rule 2 states: 'A double colon (::) can replace any group of consecutive segments that contain only zeros. The double colon (::) can only be used once within an address...' Example: 2001:db8::1 replaces multiple zero segments."
+            },
+            {
+                question: "In IP address 172.16.25.10 with subnet mask 255.255.0.0, what is the NETWORK portion?",
+                options: ["172", "172.16", "25.10", "172.16.25"],
+                correct: 1,
+                explanation: "Module 5 page 23 shows with 255.255.0.0 (16-bit mask), first 2 octets = network. So 172.16.25.10 → Network = 172.16, Host = 25.10. Like city name (network) + street address (host)."
+            },
+            {
+                question: "In IP address 192.168.1.50 with subnet mask 255.255.255.0, what is the HOST portion?",
+                options: ["192", "192.168", "192.168.1", "50"],
+                correct: 3,
+                explanation: "Module 5 shows with 255.255.255.0 (24-bit mask), first 3 octets = network (192.168.1), last octet = host (50). Host portion identifies the specific device within the network."
+            },
+            {
+                question: "Which organization established UTP categories?",
+                options: ["IEEE", "ISO", "EIA/TIA", "W3C"],
+                correct: 2,
+                explanation: "Module 4 states: 'The EIA/TIA (Electronic Industries Alliance/Telecommunications Industry Association) has established standards of UTP...' Note: Correct name is EIA/TIA—not 'ETA/TIA'."
+            },
+            {
+                question: "What is the binary value of decimal 255?",
+                options: ["11110000", "11111000", "11111100", "11111111"],
+                correct: 3,
+                explanation: "255 = 2⁸ - 1 = 11111111 (all 8 bits set to 1). This is why 255 in subnet mask means 'all bits belong to network portion.' Three 255s = 24 ones = /24 subnet."
+            },
+            {
+                question: "Which cable type has a foil shield covering the wires?",
+                options: ["UTP", "Coaxial", "Fiber Optic", "STP"],
+                correct: 3,
+                explanation: "Module 4 states: 'STP has a foil shield that covers the wires. The foil shield adds a layer of protection against electro-magnetic interference.' UTP has no shield—just twisted pairs."
+            },
+            {
+                question: "Which statement about subnet masks is CORRECT?",
+                options: ["Subnet mask 255.0.0.0 has 16 network bits", "Subnet mask 255.255.0.0 has 16 network bits", "Subnet mask 255.255.255.0 has 16 network bits", "All subnet masks have 16 network bits"],
+                correct: 1,
+                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0'. Option A = 8 bits, Option C = 24 bits. The 16-bit mask (255.255.0.0) is common for medium-sized networks like campus LANs."
+            },
+            {
+                question: "What does the binary subnet mask 11111111.11111111.00000000.00000000 represent in decimal?",
+                options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
+                correct: 1,
+                explanation: "Module 5 page 23 shows this exact binary representation equals 255.255.0.0. Each group of eight 1s = 255 in decimal. Two groups of 1s (16 bits) = 255.255, followed by two groups of 0s = .0.0."
+            }
+        ];
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const startBtn = document.getElementById('startBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const questionsContainer = document.getElementById('questionsContainer');
+        const currentQuestionEl = document.getElementById('currentQuestion');
+        const scoreEl = document.getElementById('score');
+        const correctCountEl = document.getElementById('correctCount');
+        const wrongCountEl = document.getElementById('wrongCount');
+        const scoreBar = document.getElementById('scoreBar');
+        const resultMessageEl = document.getElementById('resultMessage');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        // Quiz State
+        let userAnswers = Array(quizData.length).fill(null);
+
+        // Event Listeners
+        startBtn.addEventListener('click', startQuiz);
+        submitBtn.addEventListener('click', submitQuiz);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // Start Quiz
+        function startQuiz() {
+            welcomeScreen.style.display = 'none';
+            quizScreen.style.display = 'block';
+            userAnswers = Array(quizData.length).fill(null);
+            renderQuestions();
+        }
+
+        // Render Questions
+        function renderQuestions() {
+            questionsContainer.innerHTML = '';
+            
+            quizData.forEach((q, index) => {
+                const isTrueFalse = q.options.length === 2 && (q.options[0] === "TRUE" || q.options[0] === "FALSE");
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="question-number">${index + 1}</span>
+                        <h5 class="question-text">${q.question}</h5>
+                    </div>
+                    <div class="options-container">
+                        ${q.options.map((opt, i) => `
+                            <button class="option-btn" data-q="${index}" data-opt="${i}">
+                                ${isTrueFalse ? opt : String.fromCharCode(65 + i) + '. ' + opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                    ${index === 34 ? `
+                    <div class="module-divider mt-4">
+                        <span class="module-title">END OF MODULE 4 • START OF MODULE 5</span>
+                    </div>
+                    ` : ''}
+                `;
+                questionsContainer.appendChild(card);
+                
+                // Add visual aids for specific questions
+                if (index === 27 || index === 30) { // T568A sequence questions
+                    const seqDiv = document.createElement('div');
+                    seqDiv.className = 'color-sequence mt-3';
+                    const colors = ['white-green', 'green', 'white-orange', 'blue', 'white-blue', 'orange', 'white-brown', 'brown'];
+                    colors.forEach((color, pos) => {
+                        const wire = document.createElement('div');
+                        wire.className = `wire-color ${color}`;
+                        wire.textContent = `Pos ${pos+1}`;
+                        seqDiv.appendChild(wire);
+                    });
+                    card.appendChild(seqDiv);
+                }
+                if (index === 31 || index === 33) { // T568B sequence questions
+                    const seqDiv = document.createElement('div');
+                    seqDiv.className = 'color-sequence mt-3';
+                    const colors = ['white-orange', 'orange', 'white-green', 'blue', 'white-blue', 'green', 'white-brown', 'brown'];
+                    colors.forEach((color, pos) => {
+                        const wire = document.createElement('div');
+                        wire.className = `wire-color ${color}`;
+                        wire.textContent = `Pos ${pos+1}`;
+                        seqDiv.appendChild(wire);
+                    });
+                    card.appendChild(seqDiv);
+                }
+                if (index === 55 || index === 71 || index === 72) { // Subnet mask questions
+                    const binaryDiv = document.createElement('div');
+                    binaryDiv.className = 'subnet-binary mt-3';
+                    binaryDiv.textContent = '11111111 . 11111111 . 00000000 . 00000000';
+                    card.appendChild(binaryDiv);
+                    const note = document.createElement('p');
+                    note.className = 'mt-2 text-center text-muted fst-italic';
+                    note.innerHTML = '16 bits network (ones) + 16 bits host (zeros) = <span class="highlight">255.255.0.0</span>';
+                    card.appendChild(note);
+                }
+            });
+
+            // Add event listeners to options
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const qIndex = parseInt(this.dataset.q);
+                    const optIndex = parseInt(this.dataset.opt);
+                    
+                    // Remove selection from other options in same question
+                    document.querySelectorAll(`[data-q="${qIndex}"]`)
+                        .forEach(b => b.classList.remove('selected'));
+                    
+                    // Select this option
+                    this.classList.add('selected');
+                    userAnswers[qIndex] = optIndex;
+                    
+                    // Update current question display
+                    currentQuestionEl.textContent = qIndex + 1;
+                });
+            });
+        }
+
+        // Submit Quiz
+        function submitQuiz() {
+            // Check if all questions are answered
+            const unanswered = userAnswers.filter(answer => answer === null).length;
+            
+            if (unanswered > 0) {
+                alert(`Please answer all ${unanswered} remaining question(s) before submitting.`);
+                return;
+            }
+            
+            calculateScore();
+        }
+
+        // Calculate Score
+        function calculateScore() {
+            let correct = 0;
+            
+            // Calculate score
+            quizData.forEach((q, i) => {
+                if (userAnswers[i] === q.correct) {
+                    correct++;
+                }
+            });
+            
+            const wrong = quizData.length - correct;
+            const percent = (correct / quizData.length) * 100;
+            
+            // Update results screen
+            scoreEl.textContent = correct;
+            correctCountEl.textContent = correct;
+            wrongCountEl.textContent = wrong;
+            scoreBar.style.width = `${percent}%`;
+            scoreBar.textContent = `${Math.round(percent)}%`;
+            
+            // Set progress bar color based on score
+            if (percent >= 90) {
+                scoreBar.className = 'progress-bar bg-success';
+                resultMessageEl.textContent = 'Excellent! You\'re ready for your midterm!';
+                resultMessageEl.className = 'result-message text-success bg-success bg-opacity-10';
+            } else if (percent >= 75) {
+                scoreBar.className = 'progress-bar bg-primary';
+                resultMessageEl.textContent = 'Good job! Review explanations to be fully prepared.';
+                resultMessageEl.className = 'result-message text-primary bg-primary bg-opacity-10';
+            } else if (percent >= 60) {
+                scoreBar.className = 'progress-bar bg-warning';
+                resultMessageEl.textContent = 'Fair attempt. Study explanations carefully.';
+                resultMessageEl.className = 'result-message text-warning bg-warning bg-opacity-10';
+            } else {
+                scoreBar.className = 'progress-bar bg-danger';
+                resultMessageEl.textContent = 'Needs more review. Go through all explanations before midterm.';
+                resultMessageEl.className = 'result-message text-danger bg-danger bg-opacity-10';
+            }
+            
+            // Show results screen
+            quizScreen.style.display = 'none';
+            resultsScreen.style.display = 'block';
+            
+            // Generate detailed results
+            generateResults(correct, wrong);
+        }
+
+        // Generate Results
+        function generateResults(correct, wrong) {
+            resultsContainer.innerHTML = '';
+            
+            quizData.forEach((q, i) => {
+                const isCorrect = userAnswers[i] === q.correct;
+                const userAns = userAnswers[i];
+                const isTrueFalse = q.options.length === 2 && (q.options[0] === "TRUE" || q.options[0] === "FALSE");
+                
+                const card = document.createElement('div');
+                card.className = 'question-card mb-4';
+                
+                card.innerHTML = `
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="question-number">${i + 1}</span>
+                        <h5 class="question-text">${q.question}</h5>
+                        <span class="ms-3 fw-bold ${isCorrect ? 'text-success' : 'text-danger'}">
+                            ${isCorrect ? '✓ CORRECT' : '✗ WRONG'}
+                        </span>
+                    </div>
+                    <div class="options-container">
+                        ${q.options.map((opt, idx) => {
+                            const isUser = idx === userAns;
+                            const isRight = idx === q.correct;
+                            let classes = 'option-btn mb-2';
+                            
+                            if (isUser && isCorrect) classes += ' correct';
+                            else if (isUser && !isCorrect) classes += ' wrong';
+                            else if (isRight && !isUser) classes += ' correct';
+                            
+                            return `<button class="${classes}" disabled>
+                                ${isTrueFalse ? opt : String.fromCharCode(65 + idx) + '. ' + opt}
+                            </button>`;
+                        }).join('')}
+                    </div>
+                    <div class="explanation show">
+                        <strong>Why:</strong> ${q.explanation}
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            resultsScreen.style.display = 'none';
+            welcomeScreen.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
