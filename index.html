@@ -259,8 +259,9 @@
             font-weight: 600;
             color: white;
             text-align: center;
-            min-width: 100px;
+            min-width: 90px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 0.85rem;
         }
         .white-green { background: linear-gradient(135deg, #e0e0e0 50%, #4caf50 50%); color: #333; }
         .green { background-color: #4caf50; }
@@ -288,6 +289,15 @@
             border-radius: 4px;
             font-weight: 600;
         }
+        .section-marker {
+            background: #9b59b6;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-weight: bold;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
@@ -297,26 +307,26 @@
             <div class="header-section">
                 <h1>NET101 Midterm Quiz</h1>
                 <p class="lead">Modules 4 & 5 Review: Network Cabling & Addressing</p>
-                <span class="badge bg-purple fs-5 py-2 px-4" style="background-color: #9b59b6;">73 Questions</span>
+                <span class="badge bg-purple fs-5 py-2 px-4" style="background-color: #9b59b6;">60 Questions</span>
             </div>
             
             <div class="instructions-list">
                 <h4 class="mb-3 text-primary">Instructions:</h4>
                 <ul class="text-start">
-                    <li>Answer all 73 questions in order</li>
-                    <li>Click your answer choice (A/B/C/D or TRUE/FALSE)</li>
-                    <li>All questions must be answered before submission</li>
-                    <li>After submitting, review explanations for every question</li>
-                    <li>Green = Correct | Red = Wrong answers</li>
+                    <li>Questions 1-30: Multiple Choice (A-D)</li>
+                    <li>Questions 31-60: True/False</li>
+                    <li>Answer all questions before submitting</li>
+                    <li>Click your answer choice to select</li>
+                    <li>Green = Correct | Red = Wrong in results</li>
                 </ul>
             </div>
             
             <div class="mt-4 p-4 bg-light rounded">
                 <p class="mb-2"><strong>💡 Key Focus Areas:</strong></p>
-                <p class="mb-1">• T568A/T568B color sequences (positions 1-8)</p>
+                <p class="mb-1">• T568A vs T568B color sequences (key positions)</p>
                 <p class="mb-1">• Straight-through vs Crossover cables</p>
                 <p class="mb-1">• Subnet mask 255.255.0.0 = 16 bits (16 ones + 16 zeros)</p>
-                <p class="mb-1">• MAC vs IP address differences</p>
+                <p class="mb-1">• MAC address = identity (name) | IP address = location (address)</p>
             </div>
             
             <button id="startBtn" class="btn btn-quiz btn-start mt-4">Start Quiz</button>
@@ -327,9 +337,10 @@
             <div class="header-section">
                 <h1>NET101 Quiz</h1>
                 <p class="lead">Modules 4 & 5: Network Cabling & Addressing</p>
-                <p class="text-muted h5">Question <span id="currentQuestion">1</span> of 73</p>
+                <p class="text-muted h5">Question <span id="currentQuestion">1</span> of 60</p>
             </div>
 
+            <div class="section-marker mb-4">Multiple Choice Questions (A-D)</div>
             <div id="questionsContainer"></div>
 
             <button id="submitBtn" class="btn btn-quiz btn-submit">Submit Quiz</button>
@@ -343,7 +354,7 @@
             </div>
 
             <div class="score-display">
-                <span id="score">0</span>/73
+                <span id="score">0</span>/60
             </div>
             
             <p id="resultMessage" class="result-message"></p>
@@ -373,86 +384,172 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Complete 73 questions based strictly on NET101 Modules 4 & 5
+        // Optimized 60 questions based strictly on NET101 Modules 4 & 5
         const quizData = [
-            // ===== MODULE 4: NETWORK CABLING (Questions 1-35) =====
+            // ===== MODULE 4: NETWORK CABLING - MULTIPLE CHOICE (Questions 1-15) =====
+            {
+                question: "What does UTP stand for?",
+                options: ["UltraNet Twin Parity", "Uncoupled Transient Protected", "User Technology Protocol", "Unshielded Twisted Pair"],
+                correct: 3,
+                explanation: "Module 4 states: 'Unshielded twisted pair (UTP) is the most popular...' It has no metal shield around the wires—just 4 twisted pairs inside plastic jacket. 'Unshielded' is the key word that distinguishes it from STP."
+            },
+            {
+                question: "How many twisted pairs are inside a standard UTP cable?",
+                options: ["2 pairs", "3 pairs", "4 pairs", "8 pairs"],
+                correct: 2,
+                explanation: "Module 4 states: 'UTP consists of 4 pairs of color-coded wires twisted around each other.' 4 pairs = 8 individual wires total. Twisting prevents electromagnetic interference (crosstalk) between pairs."
+            },
+            {
+                question: "What is the standard connector for UTP cabling?",
+                options: ["HDMI", "USB-C", "RJ-11", "RJ-45 connector"],
+                correct: 3,
+                explanation: "Module 4 states: 'The standard connector for unshielded twisted pair cabling is an RJ-45 connector. This is a plastic connector that looks like a large telephone-style connector.' RJ-11 is smaller and used for telephones."
+            },
+            {
+                question: "What does 'RJ' stand for in RJ-45?",
+                options: ["Radio Jack", "Registered Jack", "Router Jack", "Remote Jack"],
+                correct: 1,
+                explanation: "Module 4 states: 'RJ stands for Registered Jack, implying that the connector follows a standard borrowed from the telephone industry.' It is NOT 'radio jack'—this is a common misconception among students."
+            },
+            {
+                question: "What is the FIRST wire color in the T568A standard?",
+                options: ["White/Orange", "White/Green", "Green", "Blue"],
+                correct: 1,
+                explanation: "Module 4 T568A diagram shows: Position 1 = white/green. Full T568A sequence: white/green → green → white/orange → blue → white/blue → orange → white/brown → brown. T568A starts with GREEN family."
+            },
+            {
+                question: "What is the THIRD wire color in the T568A standard?",
+                options: ["White/Green", "Green", "White/Orange", "Blue"],
+                correct: 2,
+                explanation: "Module 4 T568A diagram shows: Position 3 = white/orange. This is a KEY difference from T568B where position 3 is white/green. Memorize: T568A position 3 = white/orange (critical for exams)."
+            },
+            {
+                question: "What is the FOURTH wire color in BOTH T568A and T568B standards?",
+                options: ["White/Blue", "Blue", "Orange", "Green"],
+                correct: 1,
+                explanation: "Module 4 diagrams show blue is ALWAYS the 4th wire in BOTH standards. Position 4 never changes—like the 4th floor in a building always being blue. This is a fixed point to remember when wiring cables."
+            },
+            {
+                question: "What is the FIRST wire color in the T568B standard?",
+                options: ["White/Green", "Green", "White/Orange", "Orange"],
+                correct: 2,
+                explanation: "Module 4 T568B diagram shows: Position 1 = white/orange. Full T568B sequence: white/orange → orange → white/green → blue → white/blue → green → white/brown → brown. T568B starts with ORANGE family."
+            },
+            {
+                question: "What is the THIRD wire color in the T568B standard?",
+                options: ["White/Orange", "Orange", "White/Green", "Green"],
+                correct: 2,
+                explanation: "Module 4 T568B diagram shows: Position 3 = white/green. KEY difference from T568A: T568B position 3 = white/green (T568A position 3 = white/orange). This swap is why crossover cables work for PC-to-PC connections."
+            },
+            {
+                question: "What is the EIGHTH (last) wire color in BOTH T568A and T568B standards?",
+                options: ["White/Brown", "Brown", "White/Blue", "Blue"],
+                correct: 1,
+                explanation: "Both standards end with brown at position 8: T568A = ...white/brown → brown; T568B = ...white/brown → brown. The last wire is always brown—like the final step on a staircase."
+            },
+            {
+                question: "Which cable type should be used to connect a computer to a switch?",
+                options: ["HDMI", "Patch", "Crossover", "Straight-through"],
+                correct: 3,
+                explanation: "Module 4 states: 'Straight cable connects dissimilar devices together.' Computer and switch are different devices—like plugging a lamp (device) into a wall outlet (switch). Crossover is for similar devices (PC→PC)."
+            },
+            {
+                question: "Which cable type should be used to connect two computers directly?",
+                options: ["Straight-through", "Patch", "Crossover", "Fiber optic"],
+                correct: 2,
+                explanation: "Module 4 states: 'Crossover cable connects 2 similar devices together.' Two computers are similar devices—need crossover to swap transmit/receive wires so they can communicate directly without a switch."
+            },
+            {
+                question: "How is a straight-through cable wired?",
+                options: ["T568A on one end, T568B on the other", "Same standard on both ends (A-A or B-B)", "Random wire order", "Only 4 wires used"],
+                correct: 1,
+                explanation: "Module 4 states: 'A straight (patch) cable is when both ends of a cable are wired using the same standard.' Like wearing matching socks—both ends identical (A-A or B-B wiring). Most common cable in offices."
+            },
+            {
+                question: "How is a crossover cable wired?",
+                options: ["Same standard on both ends", "T568A on one end, T568B on the other", "Only blue wires crossed", "All wires reversed"],
+                correct: 1,
+                explanation: "Module 4 diagrams show crossover cable = T568A on one end + T568B on the other end. This swaps transmit/receive wires so similar devices (PC→PC) can communicate directly without signal collision."
+            },
+            {
+                question: "What is the MAXIMUM segment length for UTP cable?",
+                options: ["50 meters", "100 meters", "200 meters", "500 meters"],
+                correct: 1,
+                explanation: "Module 4 disadvantages states: 'It can only be used in length segment up to 100 meters.' Beyond this, signal weakens significantly—like shouting across a large field where your voice fades. This limits building size for networks."
+            },
+            
+            // ===== MODULE 4: NETWORK CABLING - TRUE/FALSE (Questions 16-30) =====
             {
                 question: "UTP consists of 4 pairs of color-coded wires twisted around each other.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 states: 'UTP consists of 4 pairs of color-coded wires twisted around each other. The wires are twisted to prevent electromagnetic interference (crosstalk).' 4 pairs = 8 wires total inside the cable."
+                explanation: "Module 4 states: 'UTP consists of 4 pairs of color-coded wires twisted around each other. The wires are twisted to prevent electromagnetic interference (crosstalk).' 4 pairs = 8 wires total inside the cable jacket."
             },
             {
                 question: "Crossover cable is used to connect two dissimilar devices.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 4 states: 'Crossover cable connects 2 similar devices together.' Straight-through cable connects dissimilar devices (computer → switch). Crossover is for PC→PC or switch→switch connections."
+                explanation: "Module 4 states: 'Crossover cable connects 2 similar devices together.' Straight-through cable connects dissimilar devices (computer → switch). Remember: 'Crossover = Similar devices' (both start with 'S')."
             },
             {
-                question: "The third color code in the T568A standard of twisted pair cable is white/orange.",
+                question: "The third color code in the T568A standard is white/orange.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 T568A diagram shows: Position 1=white/green, Position 2=green, Position 3=white/orange. This is fixed in the standard—position 3 is always white/orange for T568A."
+                explanation: "Module 4 T568A diagram shows: Position 1=white/green, 2=green, Position 3=white/orange. This is fixed in the standard and is a KEY difference from T568B (where position 3 is white/green)."
             },
             {
-                question: "The fourth color code in the T568B standard of twisted pair cable is blue.",
+                question: "The fourth color code in the T568B standard is blue.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 T568B diagram shows Position 4 is blue. Blue is ALWAYS the 4th wire in BOTH T568A and T568B standards—this never changes, like the 4th floor in a building always being blue."
+                explanation: "Module 4 T568B diagram shows Position 4 is blue. Blue is ALWAYS the 4th wire in BOTH T568A and T568B standards—this never changes. It's a fixed reference point when wiring cables."
             },
             {
-                question: "In RJ45, RJ means radio jack.",
+                question: "In RJ45, RJ means 'radio jack'.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 4 states: 'RJ stands for Registered Jack, implying that the connector follows a standard borrowed from the telephone industry.' It does NOT mean 'radio jack'—this is a common misconception."
-            },
-            {
-                question: "The fourth color code in the T568A standard of twisted pair cable is blue.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 4 T568A diagram shows: Position 1=white/green, 2=green, 3=white/orange, Position 4=blue. Blue is always the 4th wire in both T568A and T568B standards."
+                explanation: "Module 4 states: 'RJ stands for Registered Jack, implying that the connector follows a standard borrowed from the telephone industry.' It does NOT mean 'radio jack'—this is a common mistake students make on exams."
             },
             {
                 question: "Shielded twisted pair (STP) is suitable for environments with electrical interference.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 states: 'Shielded twisted pair (STP) is suitable for environments with electrical interference.' STP has a foil shield that blocks noise from motors/machines in factories—UTP has no shield."
+                explanation: "Module 4 states: 'Shielded twisted pair (STP) is suitable for environments with electrical interference.' STP has a foil shield that blocks noise from motors/machines in factories—UTP has no shield and would suffer interference."
             },
             {
                 question: "UTP is designed to reduce crosstalk, RFI, and EMI.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 advantages list states: 'It is designed to reduce crosstalk, RFI, and EMI.' Twisting wires cancels interference between pairs—like two people walking in circles so outside noise cancels out."
+                explanation: "Module 4 advantages list states: 'It is designed to reduce crosstalk, RFI, and EMI.' Twisting wires cancels interference between pairs—like two people walking in circles so outside noise cancels out. This is why wires are twisted."
             },
             {
                 question: "Straight-through network cable is the combination of T568A and T568B wirings.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 4 states: 'A straight (patch) cable is when both ends of a cable are wired using the same standard.' Crossover cable = combination (T568A on one end + T568B on other end). Straight-through uses same standard on both ends (A-A or B-B)."
+                explanation: "Module 4 states: 'A straight (patch) cable is when both ends use the same standard.' Crossover cable = combination (T568A on one end + T568B on other end). Straight-through uses identical wiring on both ends (A-A or B-B)."
             },
             {
-                question: "The EIA/TIA (Electronic Industries Alliance/Telecommunications Industry Association) has established standards of UTP and rated five categories of wire.",
+                question: "The EIA/TIA has established standards of UTP and rated exactly five categories of wire.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 4 states EIA/TIA established standards, but they rated MORE than 5 categories: Cat3, Cat5, Cat5e, Cat6, Cat6a, Cat7 (see categories table). Also note: Correct name is EIA/TIA—not 'ETA/TIA'."
+                explanation: "Module 4 states EIA/TIA established standards, but they rated MORE than 5 categories: Cat3, Cat5, Cat5e, Cat6, Cat6a, Cat7 (see categories table). Also note: Correct name is EIA/TIA—not 'ETA/TIA' as sometimes misspelled."
             },
             {
                 question: "Straight-through cable is used to connect two similar devices.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 4 states: 'Straight cable connects dissimilar devices together' (computer → switch). Crossover cable connects similar devices (PC → PC). Remember: 'Different devices = straight path'."
+                explanation: "Module 4 states: 'Straight cable connects dissimilar devices together' (computer → switch). Crossover cable connects similar devices (PC → PC). Remember: 'Different devices need straight path'—like plugging different things into a power strip."
             },
             {
                 question: "RJ-45 connector has 8 pins.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 shows RJ-45 as 'a plastic connector that looks like a large telephone-style connector.' Standard RJ-45 has 8 positions/8 contacts (8P8C). RJ-11 telephone jack has only 4-6 pins."
+                explanation: "Module 4 shows RJ-45 as 'a plastic connector that looks like a large telephone-style connector.' Standard RJ-45 has 8 positions/8 contacts (8P8C). RJ-11 telephone jack has only 4-6 pins—smaller size."
             },
             {
                 question: "UTP maximum segment length is 100 meters.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 disadvantages states: 'It can only be used in length segment up to 100 meters.' Beyond this, signal weakens significantly—like shouting across a large field where voice fades."
+                explanation: "Module 4 disadvantages states: 'It can only be used in length segment up to 100 meters.' This is a hard limit—beyond 100m, signal degrades too much for reliable communication. Repeaters or switches are needed to extend further."
             },
             {
                 question: "Category 5e UTP cable supports 1 Gbps speed.",
@@ -464,231 +561,63 @@
                 question: "STP is cheaper than UTP.",
                 options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 4 STP disadvantages states: 'It is the most expensive wire from UTP cables.' The metal foil shield adds manufacturing cost—UTP has no shield, making it cheaper for homes/offices."
-            },
-            {
-                question: "The standard connector for UTP cabling is RJ-45.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 4 states: 'The standard connector for unshielded twisted pair cabling is an RJ-45 connector. This is a plastic connector that looks like a large telephone-style connector.'"
-            },
-            {
-                question: "T568A and T568B both end with brown as the 8th wire color.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Both standards end with brown at position 8: T568A sequence = white/green → green → white/orange → blue → white/blue → orange → white/brown → brown. T568B = white/orange → orange → white/green → blue → white/blue → green → white/brown → brown."
-            },
-            {
-                question: "UTP has a foil shield covering the wires.",
-                options: ["TRUE", "FALSE"],
-                correct: 1,
-                explanation: "Module 4 states STP has 'a foil shield that covers the wires.' UTP is UNshielded—no metal shield, just 4 twisted pairs inside plastic jacket. That's why it's called 'Unshielded' Twisted Pair."
-            },
-            {
-                question: "Straight-through cable uses the same wiring standard on both ends.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 4 states: 'A straight (patch) cable is when both ends of a cable are wired using the same standard.' Like wearing matching socks—both ends identical (A-A or B-B wiring)."
-            },
-            {
-                question: "Crossover cable uses T568A on one end and T568B on the other end.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 4 diagrams show crossover cable = T568A on one end + T568B on the other end. This swaps transmit/receive wires so similar devices (PC→PC) can communicate directly."
-            },
-            {
-                question: "UTP is mostly useful for short-distance network connections like home and small organizations.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 4 advantages list states: 'It is mostly useful for short-distance network connections like home and small organizations.' Limited to 100 meters max—ideal for buildings but not city-wide networks."
+                explanation: "Module 4 STP disadvantages states: 'It is the most expensive wire from UTP cables.' The metal foil shield adds manufacturing cost—UTP has no shield, making it cheaper for homes/offices where interference is minimal."
             },
             {
                 question: "STP requires grounding to work properly.",
                 options: ["TRUE", "FALSE"],
                 correct: 0,
-                explanation: "Module 4 STP disadvantages mentions: 'It is used only as a grounded wire.' The foil shield must be grounded to drain electrical interference—otherwise the shield won't block noise effectively."
-            },
-            {
-                question: "Category 6 UTP cable supports 10 Gbps speed for cable lengths under 100 meters.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 4 categories table shows: Category 6 = 1 Gbps / 10 Gbps (cable length under 100 meters). Cat6a (Augmented) supports 10 Gbps at full 100m distance."
-            },
-            {
-                question: "What does UTP stand for?",
-                options: ["UltraNet Twin Parity", "Uncoupled Transient Protected", "User Technology Protocol", "Unshielded Twisted Pair"],
-                correct: 3,
-                explanation: "Module 4 states: 'Unshielded twisted pair (UTP) is the most popular...' It has no metal shield around the wires—just 4 twisted pairs inside plastic jacket. 'Unshielded' is the key word."
-            },
-            {
-                question: "How many twisted pairs are inside a standard UTP cable?",
-                options: ["2 pairs", "3 pairs", "4 pairs", "8 pairs"],
-                correct: 2,
-                explanation: "Module 4 states: 'UTP consists of 4 pairs of color-coded wires twisted around each other.' 4 pairs = 8 individual wires total. Each pair has a specific color code for termination."
-            },
-            {
-                question: "What is the standard connector for UTP cabling?",
-                options: ["HDMI", "USB-C", "RJ-11", "RJ-45 connector"],
-                correct: 3,
-                explanation: "Module 4 states: 'The standard connector for unshielded twisted pair cabling is an RJ-45 connector. This is a plastic connector that looks like a large telephone-style connector.' RJ-11 is for telephones (smaller)."
-            },
-            {
-                question: "What does 'RJ' stand for in RJ-45?",
-                options: ["Radio Jack", "Registered Jack", "Router Jack", "Remote Jack"],
-                correct: 1,
-                explanation: "Module 4 states: 'RJ stands for Registered Jack, implying that the connector follows a standard borrowed from the telephone industry.' It is NOT 'radio jack'—this is a common mistake."
-            },
-            {
-                question: "What is the FIRST wire color in the T568A standard?",
-                options: ["White/Orange", "White/Green", "Green", "Blue"],
-                correct: 1,
-                explanation: "Module 4 T568A diagram shows: Position 1 = white/green. Full T568A sequence: white/green → green → white/orange → blue → white/blue → orange → white/brown → brown."
-            },
-            {
-                question: "What is the SECOND wire color in the T568A standard?",
-                options: ["White/Green", "Green", "White/Orange", "Orange"],
-                correct: 1,
-                explanation: "Module 4 T568A diagram shows: Position 1=white/green, Position 2=green. Remember T568A starts with GREEN family (white/green → green) unlike T568B which starts with ORANGE family."
-            },
-            {
-                question: "What is the THIRD wire color in the T568A standard?",
-                options: ["White/Green", "Green", "White/Orange", "Blue"],
-                correct: 2,
-                explanation: "Module 4 T568A diagram shows: Position 3 = white/orange. This is a key difference from T568B where position 3 is white/green. Memorize: T568A position 3 = white/orange."
-            },
-            {
-                question: "What is the SIXTH wire color in the T568A standard?",
-                options: ["White/Blue", "Blue", "White/Orange", "Orange"],
-                correct: 3,
-                explanation: "Module 4 T568A diagram shows full sequence: 1=white/green, 2=green, 3=white/orange, 4=blue, 5=white/blue, Position 6=orange, 7=white/brown, 8=brown."
-            },
-            {
-                question: "What is the FIRST wire color in the T568B standard?",
-                options: ["White/Green", "Green", "White/Orange", "Orange"],
-                correct: 2,
-                explanation: "Module 4 T568B diagram shows: Position 1 = white/orange. Full T568B sequence: white/orange → orange → white/green → blue → white/blue → green → white/brown → brown."
-            },
-            {
-                question: "What is the THIRD wire color in the T568B standard?",
-                options: ["White/Orange", "Orange", "White/Green", "Green"],
-                correct: 2,
-                explanation: "Module 4 T568B diagram shows: Position 1=white/orange, 2=orange, Position 3=white/green. Key difference from T568A: T568B position 3 = white/green (T568A position 3 = white/orange)."
-            },
-            {
-                question: "What is the SIXTH wire color in the T568B standard?",
-                options: ["White/Blue", "Blue", "White/Green", "Green"],
-                correct: 3,
-                explanation: "Module 4 T568B diagram shows full sequence: 1=white/orange, 2=orange, 3=white/green, 4=blue, 5=white/blue, Position 6=green, 7=white/brown, 8=brown."
-            },
-            {
-                question: "Which cable type should be used to connect a computer to a switch?",
-                options: ["HDMI", "Patch", "Crossover", "Straight-through"],
-                correct: 3,
-                explanation: "Module 4 states: 'Straight cable connects dissimilar devices together.' Computer and switch are different devices—like plugging a lamp (device) into a wall outlet (switch). Crossover is for similar devices (PC→PC)."
+                explanation: "Module 4 STP disadvantages mentions: 'It is used only as a grounded wire.' The foil shield must be grounded to drain electrical interference—otherwise the shield won't block noise effectively and could even act as an antenna."
             },
             
-            // ===== MODULE 5: NETWORK ADDRESSING (Questions 36-73) =====
-            {
-                question: "MAC address is 48 bits long.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 5 states: 'It is in the form of a 48-bit address, often written in hexadecimal format' (e.g., 00:1A:2B:3C:4D:5E). 48 bits = 6 bytes = 12 hexadecimal characters."
-            },
-            {
-                question: "IPv4 address has 32 bits total.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 5 states: 'An IPv4 address is simply a series of 32 binary bits (ones and zeros)' grouped into 4 octets (8 bits each). 4 × 8 = 32 bits total."
-            },
-            {
-                question: "IPv6 uses 128 bits.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 5 states IPv6 uses '128-bit alphanumeric labels written in hexadecimal format' to solve IPv4's address shortage. 128 bits allows for 3.4×10³⁸ possible addresses."
-            },
-            {
-                question: "Private IP addresses starting with 192.168 are routable on the public internet.",
-                options: ["TRUE", "FALSE"],
-                correct: 1,
-                explanation: "Module 5 states private addresses 'are not routable on the public internet.' They're only for local networks (homes/offices). Public IPs (assigned by ISP) are routable globally."
-            },
-            {
-                question: "Dynamic IP addresses are assigned manually by an administrator.",
-                options: ["TRUE", "FALSE"],
-                correct: 1,
-                explanation: "Module 5 states: 'Dynamic IP Address - Automatically assigned by a network when a device is connected - Managed by DHCP.' Static IPs are manually assigned and don't change."
-            },
-            {
-                question: "Subnet mask 255.255.255.0 uses 24 bits for the network portion.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 5 page 23 states: '255.255.255.0(decimal) or 11111111.11111111.11111111.00000000(binary) uses 24 bits to identify the network number.' Three 255s = 24 ones in binary."
-            },
-            {
-                question: "In IPv6 notation, leading zeros in each segment can be omitted.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 5 Rule 1 states: 'Omit Leading Zeros... 0DB8 can be represented as DB8.' This simplifies IPv6 addresses—0000 becomes 0, 0200 becomes 200, etc."
-            },
-            {
-                question: "The MAC address changes when you connect to a different network.",
-                options: ["TRUE", "FALSE"],
-                correct: 1,
-                explanation: "Module 5 comparison states MAC is 'the Identity Information (e.g., Your Name)'—never changes. IP is 'the receiving address (e.g., Your location address)'—changes when you move networks."
-            },
-            {
-                question: "Subnet mask 255.255.0.0 has 16 network bits.",
-                options: ["TRUE", "FALSE"],
-                correct: 0,
-                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0 = 11111111.11111111.00000000.00000000'. Two 255s = 16 ones in binary = 16 network bits, 16 host bits."
-            },
+            // ===== MODULE 5: NETWORK ADDRESSING - MULTIPLE CHOICE (Questions 31-45) =====
             {
                 question: "What does IP address stand for?",
                 options: ["Internet Password", "Internal Protocol", "Internet Protocol", "Interface Port"],
                 correct: 2,
-                explanation: "Module 5 states: 'An Internet Protocol Address is a unique numerical label...' It's like a mailing address for devices on a network—ensures information reaches its destination."
+                explanation: "Module 5 states: 'An Internet Protocol Address is a unique numerical label...' It's like a mailing address for devices on a network—ensures information reaches its destination across networks."
             },
             {
                 question: "How many bits are in an IPv4 address?",
                 options: ["16 bits", "32 bits", "64 bits", "128 bits"],
                 correct: 1,
-                explanation: "Module 5 states: 'An IPv4 address is simply a series of 32 binary bits (ones and zeros)' grouped into 4 octets (8 bits each). 4 × 8 = 32 bits total."
+                explanation: "Module 5 states: 'An IPv4 address is simply a series of 32 binary bits (ones and zeros)' grouped into 4 octets (8 bits each). 4 × 8 = 32 bits total—this limits IPv4 to about 4.3 billion addresses."
             },
             {
                 question: "How many bits are in an IPv6 address?",
                 options: ["32 bits", "64 bits", "96 bits", "128 bits"],
                 correct: 3,
-                explanation: "Module 5 states IPv6 uses '128-bit alphanumeric labels written in hexadecimal format' to provide more addresses than IPv4's 4.3 billion limit."
+                explanation: "Module 5 states IPv6 uses '128-bit alphanumeric labels written in hexadecimal format' to solve IPv4's address shortage. 128 bits allows for 340 undecillion addresses (3.4×10³⁸)—enough for every grain of sand on Earth."
             },
             {
                 question: "Which is a VALID IPv4 address format?",
                 options: ["2001:0db8:85a3::8a2e:0370:7334", "172.16.254.1", "00:1A:2B:3C:4D:5E", "www.google.com"],
                 correct: 1,
-                explanation: "Module 5 examples show IPv4 = '172.16.254.1 or 10.0.0.1' in dotted-decimal notation. Option A is IPv6, C is MAC address, D is domain name—not IP formats."
+                explanation: "Module 5 examples show IPv4 = '172.16.254.1 or 10.0.0.1' in dotted-decimal notation (four numbers 0-255 separated by dots). Option A is IPv6, C is MAC address, D is domain name—not IP formats."
             },
             {
                 question: "Which is a VALID IPv6 address format?",
                 options: ["192.168.1.1", "2001:0db8:85a3:0000:0000:8a2e:0370:7334", "00-1A-2B-3C-4D-5E", "10.0.0.1"],
                 correct: 1,
-                explanation: "Module 5 shows IPv6 example: '2001:0db8:85a3:0000:0000:8a2e:0370:7334' in hexadecimal with colons. Can be shortened using rules (omit leading zeros, use :: for consecutive zeros)."
+                explanation: "Module 5 shows IPv6 example: '2001:0db8:85a3:0000:0000:8a2e:0370:7334' in hexadecimal with colons. Can be shortened using rules: omit leading zeros (0DB8→DB8) and use :: for consecutive zeros."
             },
             {
                 question: "What is the purpose of a subnet mask?",
                 options: ["Encrypt network traffic", "Identify network vs host portions of an IP address", "Assign IP addresses automatically", "Block hackers"],
                 correct: 1,
-                explanation: "Module 5 states: 'To know which portion of the IP Address is the network or the host, SUBNET MASK comes in.' It masks (hides) the host part to reveal the network part—like separating city name from street address."
+                explanation: "Module 5 states: 'To know which portion of the IP Address is the network or the host, SUBNET MASK comes in.' It masks (hides) the host part to reveal the network part—like separating city name from street address in a mailing address."
             },
             {
                 question: "What is the BINARY representation of subnet mask 255.255.0.0?",
                 options: ["11111111.00000000.00000000.00000000", "11111111.11111111.00000000.00000000", "11111111.11111111.11111111.00000000", "00000000.00000000.11111111.11111111"],
                 correct: 1,
-                explanation: "Module 5 page 23 shows: '16 bits = 255.255.0.0 = 11111111.11111111.00000000.00000000'. First 16 bits = 1s (network portion), last 16 bits = 0s (host portion). This is the 16-bit subnet mask."
+                explanation: "Module 5 page 23 shows: '16 bits = 255.255.0.0 = 11111111.11111111.00000000.00000000'. First 16 bits = 1s (network portion), last 16 bits = 0s (host portion). This is the critical 16-bit subnet mask for medium networks."
             },
             {
                 question: "How many BITS does subnet mask 255.255.0.0 use for the network portion?",
                 options: ["8 bits", "16 bits", "24 bits", "32 bits"],
                 correct: 1,
-                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0'. Two 255s = 16 ones in binary = 16 network bits. This leaves 16 bits for host addresses (supports 65,534 hosts)."
+                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0'. Two 255s = 16 ones in binary = 16 network bits. This leaves 16 bits for host addresses (supports 65,534 hosts)—ideal for campus or city networks."
             },
             {
                 question: "What does the '16 bits' in subnet mask 255.255.0.0 mean?",
@@ -697,142 +626,132 @@
                 explanation: "Module 5 states subnet mask 'reveals how many bits in the IP address are used for the network.' 255.255.0.0 = first 16 bits = network ID, last 16 bits = host ID. Example: 172.16.25.10 → Network=172.16, Host=25.10."
             },
             {
-                question: "Which subnet mask uses 8 network bits?",
-                options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
-                correct: 0,
-                explanation: "Module 5 page 23 shows '255.0.0.0(8-bits)'. One 255 = 8 ones in binary = 8 network bits. Used for very large networks (Class A)."
-            },
-            {
                 question: "Which subnet mask uses 24 network bits?",
                 options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
                 correct: 2,
-                explanation: "Module 5 page 23 states: '255.255.255.0(decimal) or 11111111.11111111.11111111.00000000(binary) uses 24 bits to identify the network number.' Common for small offices/homes."
+                explanation: "Module 5 page 23 states: '255.255.255.0(decimal) or 11111111.11111111.11111111.00000000(binary) uses 24 bits to identify the network number.' Common for small offices/homes (supports 254 hosts)."
             },
             {
                 question: "What is a PRIVATE IP address example?",
                 options: ["8.8.8.8", "172.16.25.10", "203.0.113.5", "198.51.100.1"],
                 correct: 1,
-                explanation: "Module 5 states private addresses 'most common start with 192.168.xx' but also include 172.16.x.x range. Option B (172.16.25.10) is private—used inside homes/offices, not routable on internet."
+                explanation: "Module 5 states private addresses 'most common start with 192.168.xx' but also include 172.16.x.x range. Option B (172.16.25.10) is private—used inside homes/offices, NOT routable on the public internet."
             },
             {
                 question: "What is a PUBLIC IP address used for?",
                 options: ["Connecting devices inside your home", "Communicating with external networks globally", "Identifying your laptop locally", "Printing documents"],
                 correct: 1,
-                explanation: "Module 5 states public IP 'is assigned by the ISP and is unique across the entire internet, allowing devices to communicate with external networks and other devices globally.' Required for accessing websites."
+                explanation: "Module 5 states public IP 'is assigned by the ISP and is unique across the entire internet, allowing devices to communicate with external networks and other devices globally.' Required for accessing websites like google.com."
             },
             {
                 question: "Which IP address type does NOT change over time?",
                 options: ["Dynamic", "DHCP", "Static", "Temporary"],
                 correct: 2,
-                explanation: "Module 5 states: 'Static IP Address - Do not change over time - Manually assigned to a device by an administrator...' Ideal for servers that need consistent addressing."
+                explanation: "Module 5 states: 'Static IP Address - Do not change over time - Manually assigned to a device by an administrator...' Ideal for servers that need consistent addressing (like web servers or security cameras)."
             },
             {
                 question: "Which IP address type is assigned automatically by DHCP?",
                 options: ["Static", "Fixed", "Permanent", "Dynamic"],
                 correct: 3,
-                explanation: "Module 5 states: 'Dynamic IP Address - Automatically assigned by a network when a device is connected - Managed by Dynamic Host Configuration Protocol (DHCP).' Most home devices use dynamic IPs."
-            },
-            {
-                question: "What does MAC address stand for?",
-                options: ["Main Access Controller", "Media Access Control", "Mobile Address Code", "Master Authentication Certificate"],
-                correct: 1,
-                explanation: "Module 5 states: 'Media Access Control (MAC) - Serves as a unique identifier for devices on a network.' Burned into network card at factory—like a device's fingerprint."
-            },
-            {
-                question: "How many bits is a MAC address?",
-                options: ["32 bits", "48 bits", "64 bits", "128 bits"],
-                correct: 1,
-                explanation: "Module 5 states: 'It is in the form of a 48-bit address, often written in hexadecimal format.' Example: 00:1A:2B:3C:4D:5E = 6 groups × 8 bits = 48 bits total."
+                explanation: "Module 5 states: 'Dynamic IP Address - Automatically assigned by a network when a device is connected - Managed by Dynamic Host Configuration Protocol (DHCP).' Most home devices (laptops, phones) use dynamic IPs that change periodically."
             },
             {
                 question: "What is the KEY difference between MAC and IP addresses?",
-                options: ["MAC changes when you move networks; IP stays the same", "MAC is for local networks; IP is for broader networks", "MAC is numeric only; IP uses letters", "MAC is assigned by ISP; IP by manufacturer"],
+                options: ["MAC changes when you move networks; IP stays the same", "MAC is identity (name); IP is location (address)", "MAC is numeric only; IP uses letters", "MAC is assigned by ISP; IP by manufacturer"],
                 correct: 1,
                 explanation: "Module 5 comparison: MAC = 'identity information (e.g., Your Name)' stays constant locally. IP = 'receiving address (e.g., Your location address)' changes when you move networks. MAC works at Data Link Layer; IP at Network Layer."
             },
+            
+            // ===== MODULE 5: NETWORK ADDRESSING - TRUE/FALSE (Questions 46-60) =====
             {
-                question: "Which address type is like your NAME?",
-                options: ["IP Address", "Subnet Mask", "MAC Address", "Default Gateway"],
-                correct: 2,
-                explanation: "Module 5 states MAC Address is 'the Identity Information (e.g., Your Name)'—never changes, unique to your device like your personal name. IP address is like your house address—it changes when you move."
+                question: "MAC address is 48 bits long.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states: 'It is in the form of a 48-bit address, often written in hexadecimal format' (e.g., 00:1A:2B:3C:4D:5E). 48 bits = 6 bytes = 12 hexadecimal characters—burned into network card at factory."
             },
             {
-                question: "Which address type is like your HOUSE ADDRESS?",
-                options: ["MAC Address", "IP Address", "Subnet Mask", "Port Number"],
+                question: "IPv4 address has 32 bits total.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states: 'An IPv4 address is simply a series of 32 binary bits (ones and zeros)' grouped into 4 octets (8 bits each). 4 × 8 = 32 bits total—this creates the 4.3 billion address limit."
+            },
+            {
+                question: "IPv6 uses 128 bits.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states IPv6 uses '128-bit alphanumeric labels written in hexadecimal format' to provide vastly more addresses than IPv4's 4.3 billion limit. This solves the global IPv4 address exhaustion problem."
+            },
+            {
+                question: "Private IP addresses starting with 192.168 are routable on the public internet.",
+                options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 5 states IP Address is 'the receiving address (e.g., Your location address)'—changes when you move to a new network. MAC address is like your name—it stays the same wherever you go."
+                explanation: "Module 5 states private addresses 'are not routable on the public internet.' They're only for local networks (homes/offices). Public IPs (assigned by ISP) are routable globally—required for internet access."
             },
             {
-                question: "What is the range of values for ONE octet in IPv4?",
-                options: ["0-15", "0-127", "0-255", "0-1023"],
-                correct: 2,
-                explanation: "Module 5 states: 'Octet can range 0-255 numbers' because 8 bits = 2⁸ = 256 possible values (0 to 255). Example: 192.168.1.1 has four octets, each between 0-255."
-            },
-            {
-                question: "How many total IPv4 addresses are possible?",
-                options: ["256", "65,536", "16.7 million", "4.3 billion"],
-                correct: 3,
-                explanation: "Module 5 states IPv4 'Can hold up to 4.3 billion IP Addresses' (2³² = 4,294,967,296). This limit is why IPv6 was created with 128 bits for more addresses."
-            },
-            {
-                question: "What does IPv6 solve compared to IPv4?",
-                options: ["Slower speed", "Limited number of addresses", "Harder to remember", "More expensive"],
+                question: "Dynamic IP addresses are assigned manually by an administrator.",
+                options: ["TRUE", "FALSE"],
                 correct: 1,
-                explanation: "Module 5 IPv6 description states it 'Allows a larger number of possible IP Addresses' because IPv4's 4.3 billion limit is exhausted. IPv6 provides 340 undecillion addresses (3.4×10³⁸)."
+                explanation: "Module 5 states: 'Dynamic IP Address - Automatically assigned by a network when a device is connected - Managed by DHCP.' Static IPs are manually assigned and don't change—used for servers."
             },
             {
-                question: "Which rule simplifies IPv6 address 2001:0db8:... to 2001:db8:...?",
-                options: ["Remove all zeros", "Omit leading zeros in each segment", "Replace all colons with dots", "Use decimal instead of hex"],
-                correct: 1,
-                explanation: "Module 5 Rule 1 states: 'Omit Leading Zeros... 0DB8 can be represented as DB8.' Each 16-bit segment can drop leading zeros—0000 becomes 0, 0200 becomes 200, etc."
+                question: "Subnet mask 255.255.255.0 uses 24 bits for the network portion.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 page 23 states: '255.255.255.0(decimal) or 11111111.11111111.11111111.00000000(binary) uses 24 bits to identify the network number.' Three 255s = 24 ones in binary = 24 network bits."
             },
             {
-                question: "What does '::' (double colon) mean in IPv6?",
-                options: ["End of address", "Replace one group of consecutive all-zero segments", "Separator between network/host", "Error indicator"],
+                question: "In IPv6 notation, leading zeros in each segment can be omitted.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 Rule 1 states: 'Omit Leading Zeros... 0DB8 can be represented as DB8.' This simplifies IPv6 addresses—0000 becomes 0, 0200 becomes 200. Makes addresses easier to read and type."
+            },
+            {
+                question: "The MAC address changes when you connect to a different network.",
+                options: ["TRUE", "FALSE"],
                 correct: 1,
+                explanation: "Module 5 comparison states MAC is 'the Identity Information (e.g., Your Name)'—never changes. IP is 'the receiving address (e.g., Your location address)'—changes when you move networks (like getting a new house address)."
+            },
+            {
+                question: "Subnet mask 255.255.0.0 has 16 network bits.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0 = 11111111.11111111.00000000.00000000'. Two 255s = 16 ones in binary = 16 network bits, 16 host bits. Critical concept for subnetting exams."
+            },
+            {
+                question: "MAC address is like your NAME; IP address is like your HOUSE ADDRESS.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states: MAC Address is 'the Identity Information (e.g., Your Name)'—never changes. IP Address is 'the receiving address (e.g., Your location address)'—changes when you move networks. Perfect analogy for remembering the difference."
+            },
+            {
+                question: "One octet in IPv4 can range from 0 to 255.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states: 'Octet can range 0-255 numbers' because 8 bits = 2⁸ = 256 possible values (0 to 255). Example: 192.168.1.1 has four octets, each between 0-255—never 256 or higher."
+            },
+            {
+                question: "IPv4 can hold up to 4.3 billion IP addresses.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 states IPv4 'Can hold up to 4.3 billion IP Addresses' (2³² = 4,294,967,296). This limit is why IPv6 was created with 128 bits—IPv4 addresses ran out globally around 2019."
+            },
+            {
+                question: "IPv6 was created to solve the limited number of IPv4 addresses.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 IPv6 description states it 'Allows a larger number of possible IP Addresses' because IPv4's 4.3 billion limit is exhausted. IPv6 provides 340 undecillion addresses (3.4×10³⁸)—enough for future internet growth."
+            },
+            {
+                question: "In IPv6, '::' (double colon) can replace consecutive all-zero segments.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
                 explanation: "Module 5 Rule 2 states: 'A double colon (::) can replace any group of consecutive segments that contain only zeros. The double colon (::) can only be used once within an address...' Example: 2001:db8::1 replaces multiple zero segments."
             },
             {
-                question: "In IP address 172.16.25.10 with subnet mask 255.255.0.0, what is the NETWORK portion?",
-                options: ["172", "172.16", "25.10", "172.16.25"],
-                correct: 1,
-                explanation: "Module 5 page 23 shows with 255.255.0.0 (16-bit mask), first 2 octets = network. So 172.16.25.10 → Network = 172.16, Host = 25.10. Like city name (network) + street address (host)."
-            },
-            {
-                question: "In IP address 192.168.1.50 with subnet mask 255.255.255.0, what is the HOST portion?",
-                options: ["192", "192.168", "192.168.1", "50"],
-                correct: 3,
-                explanation: "Module 5 shows with 255.255.255.0 (24-bit mask), first 3 octets = network (192.168.1), last octet = host (50). Host portion identifies the specific device within the network."
-            },
-            {
-                question: "Which organization established UTP categories?",
-                options: ["IEEE", "ISO", "EIA/TIA", "W3C"],
-                correct: 2,
-                explanation: "Module 4 states: 'The EIA/TIA (Electronic Industries Alliance/Telecommunications Industry Association) has established standards of UTP...' Note: Correct name is EIA/TIA—not 'ETA/TIA'."
-            },
-            {
-                question: "What is the binary value of decimal 255?",
-                options: ["11110000", "11111000", "11111100", "11111111"],
-                correct: 3,
-                explanation: "255 = 2⁸ - 1 = 11111111 (all 8 bits set to 1). This is why 255 in subnet mask means 'all bits belong to network portion.' Three 255s = 24 ones = /24 subnet."
-            },
-            {
-                question: "Which cable type has a foil shield covering the wires?",
-                options: ["UTP", "Coaxial", "Fiber Optic", "STP"],
-                correct: 3,
-                explanation: "Module 4 states: 'STP has a foil shield that covers the wires. The foil shield adds a layer of protection against electro-magnetic interference.' UTP has no shield—just twisted pairs."
-            },
-            {
-                question: "Which statement about subnet masks is CORRECT?",
-                options: ["Subnet mask 255.0.0.0 has 16 network bits", "Subnet mask 255.255.0.0 has 16 network bits", "Subnet mask 255.255.255.0 has 16 network bits", "All subnet masks have 16 network bits"],
-                correct: 1,
-                explanation: "Module 5 page 23 explicitly states: '16 bits = 255.255.0.0'. Option A = 8 bits, Option C = 24 bits. The 16-bit mask (255.255.0.0) is common for medium-sized networks like campus LANs."
-            },
-            {
-                question: "What does the binary subnet mask 11111111.11111111.00000000.00000000 represent in decimal?",
-                options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255"],
-                correct: 1,
-                explanation: "Module 5 page 23 shows this exact binary representation equals 255.255.0.0. Each group of eight 1s = 255 in decimal. Two groups of 1s (16 bits) = 255.255, followed by two groups of 0s = .0.0."
+                question: "In IP address 172.16.25.10 with subnet mask 255.255.0.0, the NETWORK portion is 172.16.",
+                options: ["TRUE", "FALSE"],
+                correct: 0,
+                explanation: "Module 5 page 23 shows with 255.255.0.0 (16-bit mask), first 2 octets = network. So 172.16.25.10 → Network = 172.16, Host = 25.10. Like city name (network) + street address (host)—critical for understanding subnetting."
             }
         ];
 
@@ -873,6 +792,21 @@
             questionsContainer.innerHTML = '';
             
             quizData.forEach((q, index) => {
+                // Add section marker before True/False questions
+                if (index === 15) {
+                    const marker = document.createElement('div');
+                    marker.className = 'section-marker mt-4 mb-4';
+                    marker.innerHTML = 'True/False Questions';
+                    questionsContainer.appendChild(marker);
+                }
+                // Add module divider between Module 4 and Module 5
+                if (index === 30) {
+                    const divider = document.createElement('div');
+                    divider.className = 'module-divider mt-4 mb-4';
+                    divider.innerHTML = '<span class="module-title">END OF MODULE 4 • START OF MODULE 5</span>';
+                    questionsContainer.appendChild(divider);
+                }
+                
                 const isTrueFalse = q.options.length === 2 && (q.options[0] === "TRUE" || q.options[0] === "FALSE");
                 const card = document.createElement('div');
                 card.className = 'question-card';
@@ -888,19 +822,16 @@
                             </button>
                         `).join('')}
                     </div>
-                    ${index === 34 ? `
-                    <div class="module-divider mt-4">
-                        <span class="module-title">END OF MODULE 4 • START OF MODULE 5</span>
-                    </div>
-                    ` : ''}
                 `;
                 questionsContainer.appendChild(card);
                 
                 // Add visual aids for specific questions
-                if (index === 27 || index === 30) { // T568A sequence questions
+                if (index === 5 || index === 8) { // T568A/B position 3 questions (key difference)
                     const seqDiv = document.createElement('div');
                     seqDiv.className = 'color-sequence mt-3';
-                    const colors = ['white-green', 'green', 'white-orange', 'blue', 'white-blue', 'orange', 'white-brown', 'brown'];
+                    const colorsA = ['white-green', 'green', 'white-orange', 'blue', 'white-blue', 'orange', 'white-brown', 'brown'];
+                    const colorsB = ['white-orange', 'orange', 'white-green', 'blue', 'white-blue', 'green', 'white-brown', 'brown'];
+                    const colors = (index === 5) ? colorsA : colorsB;
                     colors.forEach((color, pos) => {
                         const wire = document.createElement('div');
                         wire.className = `wire-color ${color}`;
@@ -909,19 +840,7 @@
                     });
                     card.appendChild(seqDiv);
                 }
-                if (index === 31 || index === 33) { // T568B sequence questions
-                    const seqDiv = document.createElement('div');
-                    seqDiv.className = 'color-sequence mt-3';
-                    const colors = ['white-orange', 'orange', 'white-green', 'blue', 'white-blue', 'green', 'white-brown', 'brown'];
-                    colors.forEach((color, pos) => {
-                        const wire = document.createElement('div');
-                        wire.className = `wire-color ${color}`;
-                        wire.textContent = `Pos ${pos+1}`;
-                        seqDiv.appendChild(wire);
-                    });
-                    card.appendChild(seqDiv);
-                }
-                if (index === 55 || index === 71 || index === 72) { // Subnet mask questions
+                if (index === 36 || index === 48 || index === 58) { // Subnet mask 16-bit questions
                     const binaryDiv = document.createElement('div');
                     binaryDiv.className = 'subnet-binary mt-3';
                     binaryDiv.textContent = '11111111 . 11111111 . 00000000 . 00000000';
@@ -1025,6 +944,20 @@
                 
                 const card = document.createElement('div');
                 card.className = 'question-card mb-4';
+                
+                // Add section markers in results
+                if (i === 15) {
+                    const marker = document.createElement('div');
+                    marker.className = 'section-marker mt-3 mb-3';
+                    marker.innerHTML = 'True/False Questions';
+                    resultsContainer.appendChild(marker);
+                }
+                if (i === 30) {
+                    const divider = document.createElement('div');
+                    divider.className = 'module-divider mt-3 mb-3';
+                    divider.innerHTML = '<span class="module-title">END OF MODULE 4 • START OF MODULE 5</span>';
+                    resultsContainer.appendChild(divider);
+                }
                 
                 card.innerHTML = `
                     <div class="d-flex align-items-center mb-3">
