@@ -246,31 +246,6 @@
             position: absolute;
             left: 0;
         }
-        .color-sequence {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
-            justify-content: center;
-        }
-        .wire-color {
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            color: white;
-            text-align: center;
-            min-width: 90px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-size: 0.85rem;
-        }
-        .white-green { background: linear-gradient(135deg, #e0e0e0 50%, #4caf50 50%); color: #333; }
-        .green { background-color: #4caf50; }
-        .white-orange { background: linear-gradient(135deg, #e0e0e0 50%, #ff9800 50%); color: #333; }
-        .blue { background-color: #2196f3; }
-        .white-blue { background: linear-gradient(135deg, #e0e0e0 50%, #2196f3 50%); color: #333; }
-        .orange { background-color: #ff9800; }
-        .white-brown { background: linear-gradient(135deg, #e0e0e0 50%, #795548 50%); color: #333; }
-        .brown { background-color: #795548; }
         .subnet-binary {
             background: #263238;
             color: #00e676;
@@ -313,8 +288,8 @@
             <div class="instructions-list">
                 <h4 class="mb-3 text-primary">Instructions:</h4>
                 <ul class="text-start">
-                    <li>Questions 1-30: Multiple Choice (A-D)</li>
-                    <li>Questions 31-60: True/False</li>
+                    <li>Questions 1-30: Module 4 (Network Cabling)</li>
+                    <li>Questions 31-60: Module 5 (Network Addressing)</li>
                     <li>Answer all questions before submitting</li>
                     <li>Click your answer choice to select</li>
                     <li>Green = Correct | Red = Wrong in results</li>
@@ -323,8 +298,8 @@
             
             <div class="mt-4 p-4 bg-light rounded">
                 <p class="mb-2"><strong>💡 Key Focus Areas:</strong></p>
-                <p class="mb-1">• T568A vs T568B color sequences (key positions)</p>
-                <p class="mb-1">• Straight-through vs Crossover cables</p>
+                <p class="mb-1">• T568A vs T568B color sequences (memorize key positions)</p>
+                <p class="mb-1">• Straight-through vs Crossover cable applications</p>
                 <p class="mb-1">• Subnet mask 255.255.0.0 = 16 bits (16 ones + 16 zeros)</p>
                 <p class="mb-1">• MAC address = identity (name) | IP address = location (address)</p>
             </div>
@@ -340,7 +315,6 @@
                 <p class="text-muted h5">Question <span id="currentQuestion">1</span> of 60</p>
             </div>
 
-            <div class="section-marker mb-4">Multiple Choice Questions (A-D)</div>
             <div id="questionsContainer"></div>
 
             <button id="submitBtn" class="btn btn-quiz btn-submit">Submit Quiz</button>
@@ -787,18 +761,11 @@
             renderQuestions();
         }
 
-        // Render Questions
+        // Render Questions - NO wire color sequences added
         function renderQuestions() {
             questionsContainer.innerHTML = '';
             
             quizData.forEach((q, index) => {
-                // Add section marker before True/False questions
-                if (index === 15) {
-                    const marker = document.createElement('div');
-                    marker.className = 'section-marker mt-4 mb-4';
-                    marker.innerHTML = 'True/False Questions';
-                    questionsContainer.appendChild(marker);
-                }
                 // Add module divider between Module 4 and Module 5
                 if (index === 30) {
                     const divider = document.createElement('div');
@@ -825,21 +792,7 @@
                 `;
                 questionsContainer.appendChild(card);
                 
-                // Add visual aids for specific questions
-                if (index === 5 || index === 8) { // T568A/B position 3 questions (key difference)
-                    const seqDiv = document.createElement('div');
-                    seqDiv.className = 'color-sequence mt-3';
-                    const colorsA = ['white-green', 'green', 'white-orange', 'blue', 'white-blue', 'orange', 'white-brown', 'brown'];
-                    const colorsB = ['white-orange', 'orange', 'white-green', 'blue', 'white-blue', 'green', 'white-brown', 'brown'];
-                    const colors = (index === 5) ? colorsA : colorsB;
-                    colors.forEach((color, pos) => {
-                        const wire = document.createElement('div');
-                        wire.className = `wire-color ${color}`;
-                        wire.textContent = `Pos ${pos+1}`;
-                        seqDiv.appendChild(wire);
-                    });
-                    card.appendChild(seqDiv);
-                }
+                // Add subnet mask binary visualization ONLY for relevant questions (no wire colors)
                 if (index === 36 || index === 48 || index === 58) { // Subnet mask 16-bit questions
                     const binaryDiv = document.createElement('div');
                     binaryDiv.className = 'subnet-binary mt-3';
@@ -945,13 +898,7 @@
                 const card = document.createElement('div');
                 card.className = 'question-card mb-4';
                 
-                // Add section markers in results
-                if (i === 15) {
-                    const marker = document.createElement('div');
-                    marker.className = 'section-marker mt-3 mb-3';
-                    marker.innerHTML = 'True/False Questions';
-                    resultsContainer.appendChild(marker);
-                }
+                // Add module divider in results
                 if (i === 30) {
                     const divider = document.createElement('div');
                     divider.className = 'module-divider mt-3 mb-3';
